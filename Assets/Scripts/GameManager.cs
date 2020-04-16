@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] GameObject triangleButton;
     [SerializeField] GameObject fanButton;
     [SerializeField] GameObject heartButton;
+    [SerializeField] GameObject startButton;
 
     void Awake()
     {
@@ -85,24 +86,10 @@ public class GameManager : MonoBehaviour {
 		retryButton.SetActive (false);
 		isBallMoving = false;
 		audioSource = gameObject.GetComponent<AudioSource> ();
+        startButton.SetActive(false);
+        buttonFlag = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if ((Input.GetKey(KeyCode.Return) || (this.goButtonDown)))
-        {
-            PushGoButton();
-        }
-        if ((Input.GetKey(KeyCode.Backspace) || this.retryButtonDown))
-        {
-            PushRetryButton();
-        }
-        if ((Input.GetKey(KeyCode.Delete) || this.backButtonDown))
-        {
-            GobackStageSelect();
-        }
-    }
 
 	public void PushGoButton(){
             Rigidbody2D rd = ball.GetComponent<Rigidbody2D>();
@@ -222,44 +209,130 @@ public class GameManager : MonoBehaviour {
         ResetColor();
     }
 
+
+    // Update is called once per frame
+    void Update()
+    {
+        if ((Input.GetKey(KeyCode.Return) || (this.goButtonDown)))
+        {
+            PushGoButton();
+        }
+        if ((Input.GetKey(KeyCode.Backspace) || this.retryButtonDown))
+        {
+            PushRetryButton();
+        }
+        if ((Input.GetKey(KeyCode.Delete) || this.backButtonDown))
+        {
+            GobackStageSelect();
+        }
+        if(clickCounter == 3)
+        {
+            startButton.SetActive(true);
+            return;
+        }
+        
+    }
+
     private int clickCounter = 0;
+    [SerializeField] bool buttonFlag;
+
+    private Color GetColorRed()
+    {
+        buttonFlag = true;
+        clickCounter++ ;
+        return Color.red;
+        if(clickCounter%2 == 0)
+        {
+            clickCounter --;
+            return Color.black;
+            buttonFlag = false;
+        }
+        //clickCounter++;
+        //return Color.black;
+        //buttonFlag = false;
+
+    }
+    private Color GetColorCyan()
+    {
+        clickCounter++;
+        if (clickCounter % 2 == 1)
+        {
+            return Color.cyan;
+        }
+        return Color.black;
+
+    }
+
+    private Color GetColorYellow()
+    {
+        clickCounter++;
+        if (clickCounter % 2 == 1)
+        {
+            return Color.yellow;
+        }
+        return Color.black;
+
+    }
+
+    private Color GetColorBlue()
+    {
+        clickCounter++;
+        if (clickCounter % 2 == 1)
+        {
+            return Color.blue;
+        }
+        return Color.black;
+
+    }
+
+    private Color GetColorGreen()
+    {
+        clickCounter++;
+        if (clickCounter % 2 == 1)
+        {
+            return Color.green;
+        }
+        return Color.black;
+
+    }
+
+    private Color GetColorMagenta()
+    {
+        clickCounter++;
+        if (clickCounter % 2 == 1)
+        {
+            return Color.magenta;
+        }
+        return Color.black;
+
+    }
+
 
     public void ClickSquareButton()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            clickCounter++;
-        }
-        if (clickCounter % 2== 1)
-        {
-            squareButton.GetComponent<Image>().color = Color.red;
-        }
-        else
-        {
-            squareButton.GetComponent<Image>().color = Color.black;
-        }
+        squareButton.GetComponent<Image>().color = GetColorRed();
     }
     public void ClickCrossButton()
     {
-        crossButton.GetComponent<Image>().color = Color.cyan;
+        crossButton.GetComponent<Image>().color = GetColorCyan();
     }
     public void ClickRhombusButton()
     {
-        rhombusButton.GetComponent<Image>().color = Color.yellow;
+        rhombusButton.GetComponent<Image>().color = GetColorYellow();
     }
     public void ClickTriangleButton()
     {
-        triangleButton.GetComponent<Image>().color = Color.blue;
+        triangleButton.GetComponent<Image>().color = GetColorBlue();
     }
 
     public void ClickFanButton()
     {
-        fanButton.GetComponent<Image>().color = Color.green;
+        fanButton.GetComponent<Image>().color = GetColorGreen();
     }
 
     public void ClickHeartButton()
     {
-        heartButton.GetComponent<Image>().color = Color.magenta;
+        heartButton.GetComponent<Image>().color = GetColorMagenta();
     }
 
 }
