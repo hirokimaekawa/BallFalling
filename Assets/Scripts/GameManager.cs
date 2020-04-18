@@ -33,12 +33,13 @@ public class GameManager : MonoBehaviour {
 
     void ResetColor()
     {
-        squareButton = GameObject.Find("SquareButton");
+        /*squareButton = GameObject.Find("SquareButton");
         crossButton = GameObject.Find("CrossButton");
         rhombusButton = GameObject.Find("RhombusButton");
         triangleButton = GameObject.Find("TriangleButton");
         fanButton = GameObject.Find("FanButton");
         heartButton = GameObject.Find("HeartButton");
+        */
 
         squareButton.GetComponent<Image>().color = Color.black;
         crossButton.GetComponent<Image>().color = Color.black;
@@ -87,7 +88,7 @@ public class GameManager : MonoBehaviour {
 		isBallMoving = false;
 		audioSource = gameObject.GetComponent<AudioSource> ();
         startButton.SetActive(false);
-        buttonFlag = false;
+        redButtonFlag = false;
     }
 
 
@@ -155,6 +156,7 @@ public class GameManager : MonoBehaviour {
     {
         settingPanel.SetActive(false);
         selectStagePanel.SetActive(true);
+        //startButton.SetActive(false);
     }
 
     public void SelectStageButton1()
@@ -206,6 +208,7 @@ public class GameManager : MonoBehaviour {
     {
         selectStagePanel.SetActive(false);
         settingPanel.SetActive(true);
+        //startButton.SetActive(false);
         ResetColor();
     }
 
@@ -228,110 +231,167 @@ public class GameManager : MonoBehaviour {
         if(clickCounter == 3)
         {
             startButton.SetActive(true);
-            return;
+        }
+        else
+        {
+            startButton.SetActive(false);
         }
         
     }
 
-    private int clickCounter = 0;
-    [SerializeField] bool buttonFlag;
+    public int clickCounter = 0;
+    [SerializeField] bool redButtonFlag;
+    [SerializeField] bool cyanButtonFlag;
+    [SerializeField] bool yellowButtonFlag;
+    [SerializeField] bool blueButtonFlag;
+    [SerializeField] bool greenButtonFlag;
+    [SerializeField] bool magentaButtonFlag;
+
 
     private Color GetColorRed()
     {
-        buttonFlag = true;
-        clickCounter++ ;
-        return Color.red;
-        if(clickCounter%2 == 0)
+        // すでに赤いので黒に戻す
+        if (redButtonFlag)
         {
-            clickCounter --;
+            redButtonFlag = false;
+            clickCounter--;
             return Color.black;
-            buttonFlag = false;
         }
-        //clickCounter++;
-        //return Color.black;
-        //buttonFlag = false;
+        // まだ赤くないので赤にする
+        redButtonFlag = true;
+        clickCounter++;
+        return Color.red;
 
+       
     }
     private Color GetColorCyan()
     {
-        clickCounter++;
-        if (clickCounter % 2 == 1)
+       
+        if (cyanButtonFlag)
         {
-            return Color.cyan;
+            cyanButtonFlag = false;
+            clickCounter--;
+            return Color.black;
         }
-        return Color.black;
+
+        cyanButtonFlag = true;
+        clickCounter++;
+        return Color.cyan;
 
     }
 
     private Color GetColorYellow()
     {
-        clickCounter++;
-        if (clickCounter % 2 == 1)
+        if (yellowButtonFlag)
         {
-            return Color.yellow;
+            yellowButtonFlag = false;
+            clickCounter--;
+            return Color.black;
         }
-        return Color.black;
+
+        yellowButtonFlag = true;
+        clickCounter++;
+        return Color.yellow;
 
     }
 
     private Color GetColorBlue()
     {
-        clickCounter++;
-        if (clickCounter % 2 == 1)
+        if (blueButtonFlag)
         {
-            return Color.blue;
+            blueButtonFlag = false;
+            clickCounter--;
+            return Color.black;
         }
-        return Color.black;
+
+        blueButtonFlag = true;
+        clickCounter++;
+        return Color.blue;
+
 
     }
 
     private Color GetColorGreen()
     {
-        clickCounter++;
-        if (clickCounter % 2 == 1)
+        if (greenButtonFlag)
         {
-            return Color.green;
+            greenButtonFlag = false;
+            clickCounter--;
+            return Color.black;
         }
-        return Color.black;
+
+        greenButtonFlag = true;
+        clickCounter++;
+        return Color.green;
+
 
     }
 
     private Color GetColorMagenta()
     {
-        clickCounter++;
-        if (clickCounter % 2 == 1)
+        if (magentaButtonFlag)
         {
-            return Color.magenta;
+            magentaButtonFlag = false;
+            clickCounter--;
+            return Color.black;
         }
-        return Color.black;
+
+        magentaButtonFlag = true;
+        clickCounter++;
+        return Color.magenta;
 
     }
 
 
     public void ClickSquareButton()
     {
+        if (clickCounter >= 3　&&　redButtonFlag == false)
+        {
+            return;
+        }
+      
         squareButton.GetComponent<Image>().color = GetColorRed();
     }
     public void ClickCrossButton()
     {
+        if (clickCounter >= 3 && cyanButtonFlag == false)
+        {
+            return;
+        }
         crossButton.GetComponent<Image>().color = GetColorCyan();
     }
     public void ClickRhombusButton()
     {
+        if (clickCounter >= 3 && yellowButtonFlag == false)
+        {
+            return;
+        }
         rhombusButton.GetComponent<Image>().color = GetColorYellow();
     }
     public void ClickTriangleButton()
     {
+        if (clickCounter >= 3 && blueButtonFlag == false)
+        {
+            return;
+        }
         triangleButton.GetComponent<Image>().color = GetColorBlue();
     }
 
     public void ClickFanButton()
     {
+        if (clickCounter >= 3 && greenButtonFlag == false)
+        {
+            return;
+        }
         fanButton.GetComponent<Image>().color = GetColorGreen();
     }
 
     public void ClickHeartButton()
     {
+        if (clickCounter >= 3 && magentaButtonFlag == false)
+        {
+            return;
+        }
         heartButton.GetComponent<Image>().color = GetColorMagenta();
     }
 
