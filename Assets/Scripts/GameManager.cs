@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour {
     [SerializeField] GameObject stagePanel1;
@@ -48,8 +49,6 @@ public class GameManager : MonoBehaviour {
         fanButton.GetComponent<Image>().color = Color.black;
         heartButton.GetComponent<Image>().color = Color.black;
     }
-
-    bool isSettingPanel;
 
     public int StageNo;
 	public bool isBallMoving;
@@ -109,6 +108,7 @@ public class GameManager : MonoBehaviour {
     {
         Destroy(ball);
         ball = (GameObject)Instantiate(ballPrefab);
+        ball.transform.localPosition = new Vector3(-3.5f, 4.3f, 0f);
 
         retryButton.SetActive(false);
         goButton.SetActive(true);
@@ -122,14 +122,25 @@ public class GameManager : MonoBehaviour {
 
 	public void StageClear(){
 		audioSource.PlayOneShot (clearSE);
-		if (PlayerPrefs.GetInt ("CLEAR", 0) < StageNo) {
+		/*if (PlayerPrefs.GetInt ("CLEAR", 0) < StageNo) {
 			PlayerPrefs.SetInt ("CLEAR", StageNo);
-		}
+		}*/
 
 		clearText.SetActive (true);
 		retryButton.SetActive (false);
-		Invoke("GobackStageSelect",3.0f);
-	}
+        //Invoke("GobackStageSelect",3.0f);
+        //selectStagePanel.SetActive(true);
+        RefreshStagePanel();
+    }
+    IEnumerator RefreshStagePanel()
+    {
+        yield return new WaitForSeconds(3.0f);
+        clearText.SetActive(false);
+        stagePanel1.SetActive(false);
+        selectStagePanel.SetActive(true);
+
+    }
+
 	void GobackStageSelect(){
 		SceneManager.LoadScene ("StageSelectScene");
 	}
@@ -158,12 +169,59 @@ public class GameManager : MonoBehaviour {
         selectStagePanel.SetActive(true);
         //startButton.SetActive(false);
     }
-
+    [SerializeField] GameObject squarePrefab;
+    [SerializeField] GameObject crossPrefab;
+    [SerializeField] GameObject rhombusPrefab;
+    [SerializeField] GameObject trianglePrefab;
+    [SerializeField] GameObject fanPrefab;
+    [SerializeField] GameObject heartPrefab;
     public void SelectStageButton1()
     {
         selectStagePanel.SetActive(false);
         stagePanel1.SetActive(true);
+        ball = (GameObject)Instantiate(ballPrefab);
+        ball.transform.localPosition = new Vector3(-3.5f, 4.3f, 0f);
+
+        //ball.transform.SetParent(stagePanel1.transform, false);
+        if (redButtonFlag == true)
+        {
+            GameObject obj = (GameObject)Instantiate(squarePrefab);
+            obj.transform.SetParent(stagePanel1.transform,false);
+            obj.transform.localPosition = new Vector3(UnityEngine.Random.Range(-650.0f,600.0f),UnityEngine.Random.Range(400.0f,-180.0f),0f);
+        }
+        if (cyanButtonFlag == true)
+        {
+            GameObject obj = (GameObject)Instantiate(crossPrefab);
+            obj.transform.SetParent(stagePanel1.transform, false);
+            obj.transform.localPosition = new Vector3(UnityEngine.Random.Range(-650.0f, 600.0f), UnityEngine.Random.Range(400.0f, -180.0f), 0f);
+        }
+        if (yellowButtonFlag == true)
+        {
+            GameObject obj = (GameObject)Instantiate(rhombusPrefab);
+            obj.transform.SetParent(stagePanel1.transform, false);
+            obj.transform.localPosition = new Vector3(UnityEngine.Random.Range(-650.0f, 600.0f), UnityEngine.Random.Range(400.0f, -180.0f), 0f);
+        }
+        if (blueButtonFlag == true)
+        {
+            GameObject obj = (GameObject)Instantiate(trianglePrefab);
+            obj.transform.SetParent(stagePanel1.transform, false);
+            obj.transform.localPosition = new Vector3(UnityEngine.Random.Range(-650.0f, 600.0f), UnityEngine.Random.Range(400.0f, -180.0f), 0f);
+        }
+        if (greenButtonFlag == true)
+        {
+            GameObject obj = (GameObject)Instantiate(fanPrefab);
+            obj.transform.SetParent(stagePanel1.transform, false);
+            obj.transform.localPosition = new Vector3(UnityEngine.Random.Range(-650.0f, 600.0f), UnityEngine.Random.Range(400.0f, -180.0f), 0f);
+        }
+        if (magentaButtonFlag == true)
+        {
+            GameObject obj = (GameObject)Instantiate(heartPrefab);
+            obj.transform.SetParent(stagePanel1.transform, false);
+            obj.transform.localPosition = new Vector3(UnityEngine.Random.Range(-650.0f, 600.0f), UnityEngine.Random.Range(400.0f, -180.0f), 0f);
+        }
+
     }
+
     public void SelectStageButton2()
     {
         selectStagePanel.SetActive(false);
@@ -210,6 +268,7 @@ public class GameManager : MonoBehaviour {
         settingPanel.SetActive(true);
         //startButton.SetActive(false);
         ResetColor();
+        Reset();
     }
 
 
@@ -237,6 +296,21 @@ public class GameManager : MonoBehaviour {
             startButton.SetActive(false);
         }
         
+    }
+    /*private void OnEnable()
+    {
+        Reset();
+    }*/
+    public void Reset()
+    {
+        clickCounter = 0;
+        redButtonFlag = false;
+        cyanButtonFlag = false;
+        yellowButtonFlag = false;
+        blueButtonFlag = false;
+        greenButtonFlag = false;
+        magentaButtonFlag = false;
+        startButton.SetActive(false);
     }
 
     public int clickCounter = 0;
